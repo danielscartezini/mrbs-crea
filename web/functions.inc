@@ -3061,3 +3061,38 @@ function ip_cidr_check (string $ip, string $cidr) : bool
 
   return (($ip_ip & $ip_mask) == ($ip_net & $ip_mask));
 }
+
+
+/**
+ * Retorna o tipo de reserva ('I' = Interno ou 'E' = Externo)
+ * com base no tipo de usuário cadastrado no Crea-DF.
+ */
+function get_user_booking_type(?string $username) : string
+{
+  global $default_type;
+
+  if (empty($username))
+  {
+    return $default_type ?? 'I';
+  }
+
+  try
+  {
+    $sql = "SELECT user_type FROM " . _tbl('users') . " WHERE name = ? LIMIT 1";
+    $res = db()->query1($sql, array(mb_strtolower($username)));
+    if ($res !== -1 && $res !== false && !empty($res))
+    {
+      $val = strtoupper(trim((string)$res));
+      if (in_array($val, array('I', 'E')))
+      {
+        return $val;
+      }
+    }
+  }
+  catch (\Exception $e)
+  {
+    // Em caso de tabela sem a coluna ainda, adota padrão seguro
+  }
+
+  return 'I';
+}

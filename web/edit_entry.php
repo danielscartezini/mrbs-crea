@@ -1777,7 +1777,8 @@ foreach ($edit_entry_field_order as $key)
       break;
 
     case 'type':
-      $fieldset->addElement(get_field_type($type, $area_id));
+      // Campo Interno/Externo removido do formulário de criação de reserva.
+      // O tipo é determinado automaticamente com base no perfil do usuário no Crea-DF.
       break;
 
     case 'confirmation_status':

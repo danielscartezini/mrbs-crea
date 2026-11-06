@@ -192,22 +192,22 @@ function print_outstanding(string $query) : void
   {
     $n_outstanding = get_entries_n_outstanding($mrbs_user);
 
-    $class = 'notification';
-
+    // Exibe o alerta no menu apenas quando houver pendências reais (> 0)
+    // eliminando a exibição do "0" isolado
     if ($n_outstanding > 0)
     {
-      $class .= ' attention';
-    }
+      $class = 'notification attention';
 
-    $url = 'pending.php';
-    if ($query !== '')
-    {
-      $url .= "?$query";
+      $url = 'pending.php';
+      if ($query !== '')
+      {
+        $url .= "?$query";
+      }
+      echo '<a href="' . escape_html(multisite($url)) . '"' .
+           " class=\"$class\"" .
+           ' title="' . get_vocab('outstanding', $n_outstanding) .
+           "\"><span class=\"badge-count\">$n_outstanding</span> " . get_vocab('pending') . "</a>\n";
     }
-    echo '<a href="' . escape_html(multisite($url)) . '"' .
-         " class=\"$class\"" .
-         ' title="' . get_vocab('outstanding', $n_outstanding) .
-         "\">$n_outstanding</a>\n";
   }
 }
 
@@ -216,9 +216,10 @@ function print_menu_items(string $query) : void
 {
   global $auth, $kiosk_mode_enabled;
 
-  $menu_items = array('help'   => 'help.php',
-                      'report' => 'report.php',
-                      'import' => 'import.php');
+  $menu_items = array('help'    => 'help.php',
+                      'report'  => 'report.php',
+                      'pending' => 'pending.php',
+                      'import'  => 'import.php');
 
   if ($kiosk_mode_enabled)
   {

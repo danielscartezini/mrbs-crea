@@ -697,6 +697,10 @@ if (isset($action) && ( ($action == "edit") or ($action == "add") ))
       $value = get_form_var($field['name'], $type);
       $data[$field['name']] = (isset($value)) ? $value : "";
     }
+    if (empty($data['user_type']))
+    {
+      $data['user_type'] = 'I';
+    }
   }
 
   // First make sure the user is authorized
@@ -868,6 +872,10 @@ if (isset($action) && ( ($action == "edit") or ($action == "add") ))
 
       default:
         $params['field'] = "users.$key";
+        if ($key === 'user_type' && empty($params['value']))
+        {
+          $params['value'] = 'I';
+        }
         $fieldset->addElement(get_field_custom($field, $params, $disabled));
         break;
 

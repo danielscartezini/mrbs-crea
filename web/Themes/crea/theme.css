@@ -10,7 +10,7 @@ body {
   color: #1e293b;
 }
 
-/* Banner Superior */
+/* Banner Superior Institucional */
 .banner {
   background-color: #003882 !important;
   border-bottom: 3px solid #ffb81c !important;
@@ -19,9 +19,12 @@ body {
 }
 
 .banner .logo img {
-  max-height: 52px;
-  width: auto;
-  margin: 0.25rem 1.25rem 0.25rem 0;
+  height: 46px !important;
+  width: auto !important;
+  max-width: 220px !important;
+  object-fit: contain !important;
+  margin: 0.25rem 1.25rem 0.25rem 0 !important;
+  display: block;
   transition: transform 0.2s ease;
 }
 
@@ -117,7 +120,7 @@ nav.logon input:hover {
   letter-spacing: 0.3px;
 }
 
-/* Fieldset e Legend */
+/* Fieldset e Legend com Logotipo Azul */
 .standard#logon fieldset {
   display: block !important;
   float: none !important;
@@ -138,6 +141,18 @@ nav.logon input:hover {
   padding-bottom: 0.75rem !important;
   border-bottom: 1.5px solid #f1f5f9 !important;
   letter-spacing: -0.2px;
+}
+
+/* Exibição do logo azul Crea-DF acima do título no card de login */
+.standard#logon legend::before {
+  content: "";
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  height: 58px;
+  margin: 0 auto 1.25rem auto;
+  background: url('../../images/crea-df-logo-blue.png') no-repeat center center;
+  background-size: contain;
 }
 
 /* Linhas do formulário (usuário, senha, botão) */

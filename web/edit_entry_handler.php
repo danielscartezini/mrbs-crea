@@ -351,10 +351,10 @@ if (!$is_ajax)
   }
 }
 
-if (!isset($type))
-{
-  $type = $default_type;
-}
+// O tipo da reserva (I = Interno, E = Externo) é determinado automaticamente
+// com base no tipo de usuário do solicitante (cadastrado em mrbs_users no Crea-DF)
+$booker_user = !empty($create_by) ? $create_by : $mrbs_username;
+$type = get_user_booking_type($booker_user);
 
 // Check that the type is allowed
 if (!is_book_admin($rooms) && isset($auth['admin_only_types']) && in_array($type, $auth['admin_only_types']))

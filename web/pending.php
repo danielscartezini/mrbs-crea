@@ -317,7 +317,11 @@ while (false !== ($row = $res->next_row_keyed()))
 
 if (count($rows) == 0)
 {
-  echo "<p>" .get_vocab("none_outstanding") . "</p>\n";
+  echo "<div class=\"pending_empty_state\">\n";
+  echo "  <div class=\"empty_state_icon\">✓</div>\n";
+  echo "  <h2>" . get_vocab("none_outstanding") . "</h2>\n";
+  echo "  <p>Todas as solicitações de reserva foram analisadas ou não há pedidos aguardando confirmação no momento.</p>\n";
+  echo "</div>\n";
 }
 else  // display them in a table
 {

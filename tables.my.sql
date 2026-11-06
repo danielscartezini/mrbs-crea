@@ -241,6 +241,7 @@ CREATE TABLE mrbs_users
   last_login        int DEFAULT '0' NOT NULL,
   reset_key_hash    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   reset_key_expiry  int DEFAULT 0 NOT NULL,
+  user_type         varchar(1) DEFAULT 'I' NOT NULL,
 
   PRIMARY KEY (id),
   UNIQUE KEY uq_name (name)
@@ -249,4 +250,4 @@ CREATE TABLE mrbs_users
 INSERT INTO mrbs_variables (variable_name, variable_content)
   VALUES ( 'db_version', '82');
 INSERT INTO mrbs_variables (variable_name, variable_content)
-  VALUES ( 'local_db_version', '1');
+  VALUES ( 'local_db_version', '2');

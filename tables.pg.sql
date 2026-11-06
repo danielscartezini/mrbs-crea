@@ -234,6 +234,7 @@ CREATE TABLE mrbs_users
   last_login    int DEFAULT 0 NOT NULL,
   reset_key_hash varchar(255),
   reset_key_expiry int DEFAULT 0 NOT NULL,
+  user_type     varchar(1) DEFAULT 'I' NOT NULL,
 
   CONSTRAINT mrbs_uq_name UNIQUE (name)
 );
@@ -253,4 +254,4 @@ CREATE TRIGGER update_mrbs_users_timestamp BEFORE UPDATE ON mrbs_users FOR EACH 
 INSERT INTO mrbs_variables (variable_name, variable_content)
   VALUES ('db_version', '82');
 INSERT INTO mrbs_variables (variable_name, variable_content)
-  VALUES ('local_db_version', '1');
+  VALUES ('local_db_version', '2');
