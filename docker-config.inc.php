@@ -1,78 +1,74 @@
 <?php // -*-mode: PHP; coding:utf-8;-*-
+declare(strict_types=1);
 namespace MRBS;
 
 /**************************************************************************
- *   MRBS Configuration File
- *   Configure this file for your site.
- *   You shouldn't have to modify anything outside this file.
- *
- *   This file has already been populated with the minimum set of configuration
- *   variables that you will need to change to get your system up and running.
- *   If you want to change any of the other settings in systemdefaults.inc.php
- *   or areadefaults.inc.php, then copy the relevant lines into this file
- *   and edit them here.   This file will override the default settings and
- *   when you upgrade to a new version of MRBS the config file is preserved.
- *
- *   NOTE: if you include or require other files from this file, for example
- *   to store your database details in a separate location, then you should
- *   use an absolute and not a relative pathname.
+ * MRBS Configuration File - Container Deployment - Crea-DF
+ * Conselho Regional de Engenharia e Agronomia do Distrito Federal
+ * Sistema de Reserva de Salas
  **************************************************************************/
 
 /**********
  * Timezone
  **********/
+$timezone = $_ENV['MRBS_TIMEZONE'] ?? "America/Sao_Paulo";
 
-// The timezone your meeting rooms run in. It is especially important
-// to set this if you're using PHP 5 on Linux. In this configuration
-// if you don't, meetings in a different DST than you are currently
-// in are offset by the DST offset incorrectly.
-//
-// Note that timezones can be set on a per-area basis, so strictly speaking this
-// setting should be in areadefaults.inc.php, but as it is so important to set
-// the right timezone it is included here.
-//
-// When upgrading an existing installation, this should be set to the
-// timezone the web server runs in.  See the INSTALL document for more information.
-//
-// A list of valid timezones can be found at http://php.net/manual/timezones.php
-// The following line must be uncommented by removing the '//' at the beginning
-$timezone = $_ENV['MRBS_TIMEZONE'] ?? "Etc/UTC";
 
 /*******************
  * Database settings
  ******************/
-// Which database system: "pgsql"=PostgreSQL, "mysql"=MySQL
 $dbsys = $_ENV['MRBS_DB_SYSTEM'] ?? 'mysql';
-// Hostname of database server. For pgsql, can use "" instead of localhost
-// to use Unix Domain Sockets instead of TCP/IP. For mysql "localhost"
-// tells the system to use Unix Domain Sockets, and $db_port will be ignored;
-// if you want to force TCP connection you can use "127.0.0.1".
 $db_host = $_ENV['MRBS_DB_HOST'] ?? '172.17.0.1';
-// If you need to use a non standard port for the database connection you
-// can uncomment the following line and specify the port number
-// $db_port = 1234;
-// Database name:
+$db_port = $_ENV['MRBS_DB_PORT'] ?? null;
 $db_database = $_ENV['MRBS_DB_DATABASE'] ?? 'mrbs';
-// Schema name.  This only applies to PostgreSQL and is only necessary if you have more
-// than one schema in your database and also you are using the same MRBS table names in
-// multiple schemas.
-//$db_schema = "public";
-// Database login user name:
 $db_login = $_ENV['MRBS_DB_USER'] ?? 'mrbs';
-// Database login password:
 $db_password = $_ENV['MRBS_DB_PASSWORD'] ?? 'mrbs-password';
-// Prefix for table names.  This will allow multiple installations where only
-// one database is available
 $db_tbl_prefix = $_ENV['MRBS_DB_TBL_PREFIX'] ?? 'mrbs_';
-// Set $db_persist to TRUE to use PHP persistent (pooled) database connections.  Note
-// that persistent connections are not recommended unless your system suffers significant
-// performance problems without them.   They can cause problems with transactions and
-// locks (see http://php.net/manual/en/features.persistent-connections.php) and although
-// MRBS tries to avoid those problems, it is generally better not to use persistent
-// connections if you can.
 $db_persist = false;
 
 
-/* Add lines from systemdefaults.inc.php and areadefaults.inc.php below here
-   to change the default configuration. Do _NOT_ modify systemdefaults.inc.php
-   or areadefaults.inc.php.  */
+/**************************************************
+ * Identidade Institucional - Crea-DF
+ **************************************************/
+$mrbs_company = "Crea-DF";
+$mrbs_company_more_info = "Conselho Regional de Engenharia e Agronomia do Distrito Federal";
+$mrbs_company_url = "https://www.crea-df.org.br/";
+$mrbs_company_logo = "images/crea-df-logo.svg";
+
+// Tema e Folha de Estilos Customizada
+$theme = "crea";
+$custom_css_url = "css/custom.css";
+
+
+/**************************************************
+ * Controle de Acesso e Autenticação Obrigatória
+ **************************************************/
+// Exigir login obrigatório: bloqueia acesso público.
+// Visitantes não autenticados são direcionados imediatamente para a tela de login.
+$auth['deny_public_access'] = true;
+
+// Proibir agendamento anônimo
+$auth['allow_anonymous_booking'] = false;
+
+// Tipo de autenticação: 'db' (banco de dados interno do MRBS)
+$auth['type'] = "db";
+
+// Esquema de sessão via PHP com cookie seguro
+$auth['session'] = "php";
+$auth['session_php']['session_name'] = "CREADF_SESSID";
+
+
+/**************************************************
+ * Localização e Idioma
+ **************************************************/
+$default_language_tokens = "pt-br";
+$disable_automatic_language_changing = false;
+$override_locale = "pt_BR.utf-8";
+
+// Personalização de textos institucionais
+$vocab_override['pt-br']['mrbs'] = "Reserva de Salas - Crea-DF";
+$vocab_override['pt-br']['please_login'] = "Identificação de Usuário";
+$vocab_override['pt-br']['users.name'] = "Usuário / Matrícula";
+$vocab_override['pt-br']['users.password'] = "Senha";
+$vocab_override['pt-br']['login'] = "Entrar no Sistema";
+$vocab_override['pt-br']['unknown_user'] = "Usuário ou senha inválidos. Em caso de dúvidas, procure a Gerência de TI do Crea-DF.";

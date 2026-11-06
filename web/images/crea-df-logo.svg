@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 70" width="320" height="70">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Simbolo Confea/Crea -->
+  <g transform="translate(35, 35)">
+    <!-- 12 Dentes da Engrenagem (6 retangulos rotacionados) -->
+    <g fill="#ffb81c">
+      <rect x="-4" y="-27" width="8" height="54" rx="2" />
+      <rect x="-4" y="-27" width="8" height="54" rx="2" transform="rotate(30)" />
+      <rect x="-4" y="-27" width="8" height="54" rx="2" transform="rotate(60)" />
+      <rect x="-4" y="-27" width="8" height="54" rx="2" transform="rotate(90)" />
+      <rect x="-4" y="-27" width="8" height="54" rx="2" transform="rotate(120)" />
+      <rect x="-4" y="-27" width="8" height="54" rx="2" transform="rotate(150)" />
+    </g>
+    <!-- Corpo externo da engrenagem -->
+    <circle r="23" fill="#ffb81c" />
+    
+    <!-- Anel interno azul escuro -->
+    <circle r="19" fill="#002b66" />
+    
+    <!-- Aro dourado interno -->
+    <circle r="15" fill="none" stroke="#ffb81c" stroke-width="2" />
+    
+    <!-- Triangulo Confea / Teodolito -->
+    <polygon points="0,-10 9,7 -9,7" fill="#ffb81c" />
+    <circle cx="0" cy="0" r="2.5" fill="#002b66" />
+  </g>
+
+  <!-- Tipografia Institucional -->
+  <g transform="translate(74, 0)">
+    <text x="0" y="32" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif" font-weight="900" font-size="25" fill="#ffffff" letter-spacing="1.5">CREA-DF</text>
+    
+    <!-- Traco dourado decorativo -->
+    <rect x="0" y="38" width="130" height="2.5" rx="1" fill="#ffb81c" />
+    
+    <text x="0" y="51" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif" font-weight="600" font-size="9.5" fill="#f1f5f9" letter-spacing="0.2">Conselho Regional de Engenharia</text>
+    <text x="0" y="63" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif" font-weight="600" font-size="9.5" fill="#f1f5f9" letter-spacing="0.2">e Agronomia do Distrito Federal</text>
+  </g>
+</svg>
