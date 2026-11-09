@@ -218,6 +218,17 @@ else
   // Validate times mode settings
   if (!$area_enable_periods)
   {
+    // Auto-correct periods dummy values (12:00, 12:01, 1 min res) to sensible defaults
+    if (($area_morningstarts == 12 && $area_eveningends == 12 && $area_res_mins <= 5) || $area_res_mins <= 1)
+    {
+      $area_morningstarts = 7;
+      $area_morningstarts_minutes = 0;
+      $area_eveningends = 19;
+      $area_eveningends_minutes = 0;
+      $area_res_mins = 30;
+      $area_def_duration_mins = 60;
+    }
+
     // Avoid divide by zero errors
     if ($area_res_mins == 0)
     {

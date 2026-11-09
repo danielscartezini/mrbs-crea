@@ -217,13 +217,28 @@ function get_fieldset_times() : ElementFieldset
 
   $fieldset->addLegend($legend);
 
+  // First slot start, resolution and evening ends
+  $first_slot_val = sprintf('%02d:%02d', $morningstarts, $morningstarts_minutes);
+  $last_slot_val = sprintf('%02d:%02d', $eveningends, $eveningends_minutes);
+  $res_mins_val = (int) ($resolution/60);
+  $def_dur_val = (int) ($default_duration/60);
+
+  // If in periods mode or if corrupted by leftover periods dummy values (12:00, 12:01, 1 min),
+  // use standard business hour defaults so toggling mode or editing works correctly
+  if ($enable_periods || ($morningstarts == 12 && $eveningends == 12) || $res_mins_val <= 1)
+  {
+    $first_slot_val = '07:00';
+    $last_slot_val = '19:00';
+    $res_mins_val = 30;
+    $def_dur_val = 60;
+  }
+
   // First slot start
   $field = new FieldInputTime();
-  $value = sprintf('%02d:%02d', $morningstarts, $morningstarts_minutes);
   $field->setLabel(get_vocab('area_first_slot_start'))
         ->setControlAttributes(array('id'       => 'area_start_first_slot',
                                      'name'     => 'area_start_first_slot',
-                                     'value'    => $value,
+                                     'value'    => $first_slot_val,
                                      'required' => true));
   $fieldset->addElement($field);
 
@@ -233,7 +248,7 @@ function get_fieldset_times() : ElementFieldset
         ->setControlAttributes(array('id'       => 'area_res_mins',
                                      'name'     => 'area_res_mins',
                                      'min'      => '1',
-                                     'value'    => (int) $resolution/60,
+                                     'value'    => $res_mins_val,
                                      'required' => true));
   $fieldset->addElement($field);
 
@@ -243,7 +258,7 @@ function get_fieldset_times() : ElementFieldset
         ->setControlAttributes(array('id'       => 'area_def_duration_mins',
                                      'name'     => 'area_def_duration_mins',
                                      'min'      => '1',
-                                     'value'    => (int) $default_duration/60,
+                                     'value'    => $def_dur_val,
                                      'required' => true));
   $options = array('1' => get_vocab('all_day'));
   $checked = ($default_duration_all_day) ? '1' : null;
@@ -258,13 +273,12 @@ function get_fieldset_times() : ElementFieldset
   // dynamically regenerated if the start of the first slot or the resolution change.    The code below is
   // therefore an alternative for non-JavaScript browsers.
   $field = new FieldInputTime();
-  $value = sprintf('%02d:%02d', $eveningends, $eveningends_minutes);
   $field->setAttributes(array('id'    => 'last_slot',
                               'class' => 'js_hidden'))
         ->setLabel(get_vocab('area_last_slot_start'))
         ->setControlAttributes(array('id'       => 'area_start_last_slot',
                                      'name'     => 'area_start_last_slot',
-                                     'value'    => $value,
+                                     'value'    => $last_slot_val,
                                      'required' => true));
   $fieldset->addElement($field);
 

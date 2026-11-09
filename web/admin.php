@@ -150,6 +150,16 @@ function generate_new_area_form() : void
                                      'maxlength' => maxlength('area.area_name')));
   $fieldset->addElement($field);
 
+  // Modo de Agendamento: Por Horários / Calendário ou Por Períodos
+  $options = array('0' => get_vocab('mode_times'),
+                   '1' => get_vocab('mode_periods'));
+  $field = new FieldSelect();
+  $field->setLabel(get_vocab('mode'))
+        ->setControlAttributes(array('id'   => 'add_area_mode',
+                                     'name' => 'area_enable_periods'))
+        ->addSelectOptions($options, '0', true);
+  $fieldset->addElement($field);
+
   // The submit button
   $field = new FieldInputSubmit();
   $field->setControlAttributes(array('value' => get_vocab('addarea'),
@@ -175,13 +185,27 @@ function generate_new_room_form() : void
   $form->setAttributes($attributes);
 
   // Hidden inputs
-  $hidden_inputs = array('type' => 'room',
-                         'area' => $area);
-  $form->addHiddenInputs($hidden_inputs);
+  $form->addHiddenInput('type', 'room');
 
   // Visible fields
   $fieldset = new ElementFieldset();
   $fieldset->addLegend(get_vocab('addroom'));
+
+  // Seleção de Área indicando o modo de agendamento (Horários ou Períodos)
+  $areas = get_area_names(true);
+  $area_options = array();
+  foreach ($areas as $a_id => $a_name)
+  {
+    $a_detail = get_area_details((int)$a_id);
+    $mode_str = (!empty($a_detail['enable_periods'])) ? get_vocab('mode_periods') : get_vocab('mode_times');
+    $area_options[$a_id] = "$a_name ($mode_str)";
+  }
+  $field = new FieldSelect();
+  $field->setLabel(get_vocab('area'))
+        ->setControlAttributes(array('id'   => 'room_area',
+                                     'name' => 'area'))
+        ->addSelectOptions($area_options, $area, true);
+  $fieldset->addElement($field);
 
   // The name field
   $field = new FieldInputText();

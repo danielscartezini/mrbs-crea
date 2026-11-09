@@ -5,13 +5,13 @@ namespace MRBS;
 // CREA-DF THEME STYLING
 // Paleta Institucional do Crea-DF / Confea
 
-$crea_blue_navy         = "#002b66";    // Azul Marinho Escuro
-$crea_blue_primary      = "#003882";    // Azul Institucional Confea/Crea
-$crea_blue_light        = "#005baa";    // Azul Secundário / Destaque
-$crea_gold              = "#ffb81c";    // Dourado / Amarelo Institucional
+$crea_blue_navy         = "#094c8c";    // Azul Marinho Escuro
+$crea_blue_primary      = "#427bbd";    // Azul Institucional Confea/Crea
+$crea_blue_light        = "#4a89d3";    // Azul Secundário / Destaque
+$crea_gold              = "#ba9705";    // Dourado / Amarelo Institucional
 $crea_gold_hover        = "#e5a818";
 
-$body_background_color          = "#f4f6f9";    // Fundo limpo e moderno
+$body_background_color          = "#e8e8e8";    // Fundo limpo e moderno
 $standard_font_color            = "#1e293b";    // Cor de fonte primária legível
 $header_font_color              = "#ffffff";    // Texto branco nos cabeçalhos
 $highlight_font_color           = "#c53030";    // Destaque de erros/alertas
@@ -22,7 +22,7 @@ $banner_font_color              = $header_font_color;
 $banner_nav_hover_color         = $crea_blue_navy;    // Hover nos links do banner
 
 $minical_view_color             = $crea_blue_primary;
-$minical_today_color            = "#cce3f5";
+$minical_today_color            = "#c1d4eb";
 
 $header_back_color              = $crea_blue_primary;
 $flatpickr_highlight_color      = $crea_blue_primary;

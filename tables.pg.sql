@@ -254,4 +254,4 @@ CREATE TRIGGER update_mrbs_users_timestamp BEFORE UPDATE ON mrbs_users FOR EACH 
 INSERT INTO mrbs_variables (variable_name, variable_content)
   VALUES ('db_version', '82');
 INSERT INTO mrbs_variables (variable_name, variable_content)
-  VALUES ('local_db_version', '2');
+  VALUES ('local_db_version', '1');

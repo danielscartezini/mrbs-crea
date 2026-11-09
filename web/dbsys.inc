@@ -102,6 +102,8 @@ function db() : DB
         $db_port,
         $db_options
       );
+
+      apply_local_migrations($db_obj);
     }
     catch (\Exception $e)
     {
@@ -133,4 +135,60 @@ function db_schema_version(DB $handle, bool $local=false) : int
   }
 
   return max($result, 0);
+}
+
+
+/**
+ * Executa ajustes automáticos na base de dados de forma transparente,
+ * sem exigir login de administrador de banco de dados.
+ */
+function apply_local_migrations(DB $handle) : void
+{
+  static $applied = false;
+  if ($applied)
+  {
+    return;
+  }
+  $applied = true;
+
+  try
+  {
+    // 1. Garantir que a coluna user_type existe na tabela users
+    if ($handle->table_exists(_tbl('users')))
+    {
+      $columns = $handle->field_info(_tbl('users'));
+      $has_user_type = false;
+      foreach ($columns as $col)
+      {
+        if ($col['name'] === 'user_type')
+        {
+          $has_user_type = true;
+          break;
+        }
+      }
+      if (!$has_user_type)
+      {
+        $handle->command("ALTER TABLE " . _tbl('users') . " ADD COLUMN user_type VARCHAR(1) DEFAULT 'I' NOT NULL");
+      }
+    }
+
+    // 2. Corrigir áreas que estejam com valores residuais de modo períodos (12:00 às 12:01, 1 min)
+    if ($handle->table_exists(_tbl('area')))
+    {
+      $sql = "UPDATE " . _tbl('area') . "
+                 SET morningstarts = 7,
+                     morningstarts_minutes = 0,
+                     eveningends = 19,
+                     eveningends_minutes = 0,
+                     resolution = 1800,
+                     default_duration = 3600
+               WHERE (enable_periods = 0 OR enable_periods IS NULL)
+                 AND (resolution <= 60 OR (morningstarts = 12 AND eveningends = 12))";
+      $handle->command($sql);
+    }
+  }
+  catch (\Throwable $e)
+  {
+    // Ignora silenciosamente se já aplicado ou se o usuário não possuir privilégio DDL
+  }
 }

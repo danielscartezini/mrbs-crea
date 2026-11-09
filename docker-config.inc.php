@@ -32,7 +32,7 @@ $db_persist = false;
  **************************************************/
 $mrbs_company = "Crea-DF";
 $mrbs_company_more_info = "Conselho Regional de Engenharia e Agronomia do Distrito Federal";
-$mrbs_company_url = "https://www.crea-df.org.br/";
+$mrbs_company_url = "https://www.creadf.org.br/";
 
 // Logotipo institucional adicionado na pasta images/
 $mrbs_company_logo = "images/crea-df-logo.png";
@@ -75,17 +75,25 @@ $prevent_editing_or_deleting_approved_bookings = true;
 
 
 /**************************************************
- * Períodos de Reserva (Manhã e Tarde)
+ * Modo de Agendamento: Períodos ou Horários (Calendário)
  **************************************************/
-// Ativa o modo de agendamento por períodos em vez de horários exatos
-$enable_periods = true;
+// O modo de agendamento pode ser configurado por área/sala:
+// - Modo Horários / Calendário (ex: 07:00 às 19:00)
+// - Modo Períodos (Manhã e Tarde)
+$enable_periods = false;
 
-// Define os períodos institucionais para agendamento
+// Configurações padrão para áreas em modo Horários / Calendário
+$morningstarts = 7;
+$morningstarts_minutes = 0;
+$eveningends = 19;
+$eveningends_minutes = 0;
+$resolution = 1800; // 30 minutos
+$default_duration = 3600; // 1 hora
+
+// Configuração padrão dos períodos institucionais (Manhã e Tarde)
 unset($periods);
 $periods[] = "Manhã";
 $periods[] = "Tarde";
-
-// Duração padrão ao selecionar uma reserva (1 período)
 $default_duration_periods = 1;
 
 
@@ -112,3 +120,6 @@ $vocab_override['pt-br']['awaiting_approval'] = "Aguardando Aprovação de Admin
 $vocab_override['pt-br']['pending'] = "Reservas Pendentes de Aprovação";
 $vocab_override['pt-br']['none_outstanding'] = "Não existem reservas pendentes de aprovação.";
 $vocab_override['pt-br']['enable_approval'] = "Exigir aprovação de administrador para confirmação";
+$vocab_override['pt-br']['mode'] = "Modo de Agendamento";
+$vocab_override['pt-br']['mode_periods'] = "Por Períodos (Manhã e Tarde)";
+$vocab_override['pt-br']['mode_times'] = "Por Horários / Calendário";

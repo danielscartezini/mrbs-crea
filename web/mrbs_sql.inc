@@ -2471,7 +2471,7 @@ function get_period_names() : array
 
 // Adds an area, returning the new id, or FALSE on failure with the
 // error in $error
-function mrbsAddArea($name, &$error)
+function mrbsAddArea($name, &$error, ?bool $enable_periods = null)
 {
   global $area_defaults, $boolean_fields;
 
@@ -2503,6 +2503,61 @@ function mrbsAddArea($name, &$error)
         $sql_col[] = $key;
         $sql_val[] = "?";
         $sql_params[] = $name;
+        break;
+      case 'enable_periods':
+        $sql_col[] = $key;
+        $sql_val[] = "?";
+        $mode_val = ($enable_periods !== null) ? $enable_periods : (!empty($area_defaults[$key]));
+        $sql_params[] = ($mode_val) ? 1 : 0;
+        break;
+      case 'morningstarts':
+        $sql_col[] = $key;
+        $sql_val[] = "?";
+        if ($enable_periods === true) {
+          $sql_params[] = 12;
+        } elseif ($enable_periods === false) {
+          $sql_params[] = 7;
+        } else {
+          $sql_params[] = $area_defaults[$key];
+        }
+        break;
+      case 'morningstarts_minutes':
+        $sql_col[] = $key;
+        $sql_val[] = "?";
+        $sql_params[] = 0;
+        break;
+      case 'eveningends':
+        $sql_col[] = $key;
+        $sql_val[] = "?";
+        if ($enable_periods === true) {
+          $sql_params[] = 12;
+        } elseif ($enable_periods === false) {
+          $sql_params[] = 19;
+        } else {
+          $sql_params[] = $area_defaults[$key];
+        }
+        break;
+      case 'eveningends_minutes':
+        $sql_col[] = $key;
+        $sql_val[] = "?";
+        if ($enable_periods === true) {
+          $sql_params[] = 1;
+        } elseif ($enable_periods === false) {
+          $sql_params[] = 0;
+        } else {
+          $sql_params[] = $area_defaults[$key];
+        }
+        break;
+      case 'resolution':
+        $sql_col[] = $key;
+        $sql_val[] = "?";
+        if ($enable_periods === true) {
+          $sql_params[] = 60;
+        } elseif ($enable_periods === false) {
+          $sql_params[] = 1800;
+        } else {
+          $sql_params[] = $area_defaults[$key];
+        }
         break;
       case 'periods':
         $sql_col[] = $key;

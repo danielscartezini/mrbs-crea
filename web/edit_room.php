@@ -150,11 +150,18 @@ function get_fieldset_general(array $data) : ElementFieldset
 
   // The area select
   $areas = get_area_names(true);
+  $area_options = array();
+  foreach ($areas as $a_id => $a_name)
+  {
+    $a_detail = get_area_details((int)$a_id);
+    $mode_str = (!empty($a_detail['enable_periods'])) ? get_vocab('mode_periods') : get_vocab('mode_times');
+    $area_options[$a_id] = "$a_name ($mode_str)";
+  }
   $field = new FieldSelect();
   $field->setLabel(get_vocab('area'))
         ->setControlAttributes(array('name'     => 'new_area',
                                      'disabled' => $disabled))
-        ->addSelectOptions($areas, $data['area_id'], true);
+        ->addSelectOptions($area_options, $data['area_id'], true);
   $fieldset->addElement($field);
 
   // Room name

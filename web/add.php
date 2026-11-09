@@ -37,10 +37,17 @@ else
   // or an area
   if ($type == "area")
   {
-    $area = mrbsAddArea($name, $error);
+    $area_enable_periods = get_form_var('area_enable_periods', 'string', null, INPUT_POST);
+    $periods_bool = ($area_enable_periods !== null) ? ($area_enable_periods === '1' || $area_enable_periods === 'true') : null;
+    $area = mrbsAddArea($name, $error, $periods_bool);
   }
   elseif ($type == "room")
   {
+    $posted_area = get_form_var('area', 'int', $area, INPUT_POST);
+    if (!empty($posted_area))
+    {
+      $area = $posted_area;
+    }
     $room = mrbsAddRoom($name, $area, $error, $description, $capacity, $room_admin_email);
   }
 }

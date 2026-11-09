@@ -1719,6 +1719,22 @@ function clean_area_row(array $row) : array
     trigger_error($message, E_USER_WARNING);
   }
 
+  // (3) Sanitize times-mode areas with periods-mode leftover values (e.g. 12:00 to 12:01, 1 min resolution)
+  if (empty($row['enable_periods']))
+  {
+    if ((isset($row['morningstarts']) && $row['morningstarts'] == 12 &&
+         isset($row['eveningends']) && $row['eveningends'] == 12) ||
+        (isset($row['resolution']) && $row['resolution'] <= 60))
+    {
+      $row['morningstarts'] = 7;
+      $row['morningstarts_minutes'] = 0;
+      $row['eveningends'] = 19;
+      $row['eveningends_minutes'] = 0;
+      $row['resolution'] = 1800; // 30 minutes
+      $row['default_duration'] = 3600; // 1 hour
+    }
+  }
+
   return $row;
 }
 
@@ -1848,10 +1864,22 @@ function get_area_settings(int $area) : void
     $eveningends = 12;
     $eveningends_minutes = count($periods) - 1;
   }
-  elseif (!isset($morningstarts_minutes))
+  else
   {
-    // ensure that $morningstarts_minutes defaults to zero if not set
-    $morningstarts_minutes = 0;
+    if (($morningstarts == 12 && $eveningends == 12) || $resolution <= 60)
+    {
+      $morningstarts = 7;
+      $morningstarts_minutes = 0;
+      $eveningends = 19;
+      $eveningends_minutes = 0;
+      $resolution = 1800;
+      $default_duration = 3600;
+    }
+    if (!isset($morningstarts_minutes))
+    {
+      // ensure that $morningstarts_minutes defaults to zero if not set
+      $morningstarts_minutes = 0;
+    }
   }
 
   // If it's been set in the config settings then force all bookings to be shown
